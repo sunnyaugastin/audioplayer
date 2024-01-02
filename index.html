@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Audio Player</title>
+</head>
+<body>
+    <header>
+        <h1>Your Audio Player</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Now Playing</h2>
+            <audio controls id="audio-player">
+                <!-- Use the source tag to specify the audio file path -->
+                <!-- Replace '1.THELAVAARAKAMUNDHE.mp3' with the default file path -->
+                <source src="1.THELAVAARAKAMUNDHE.mp3" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+        </section>
+
+        <section>
+            <h2>Music Library</h2>
+            <ul id="music-list">
+                <!-- List of available audio files -->
+                <!-- You can dynamically generate these using JavaScript -->
+                <li><button onclick="playAudio('1.THELAVAARAKAMUNDHE.mp3')">THELAVAARAKAMUNDHE</button></li>
+                <li><button onclick="playAudio('2.AAKARSHANA.MP3')">AAKARSHANA.MP3</button></li>
+                <li><button onclick="playAudio('3.AA DEVUDU LEDANI.mp3')">AA DEVUDU</button></li>
+                <li><button onclick="playAudio('5.CHADHUVUKONANI YESUKI PAANDITHYAM.MP3')">CHADHUVUKONANI</button></li>
+                <!-- Add more audio files as needed -->
+            </ul>
+            <div>
+                <button onclick="playPrevious()">Previous</button>
+                <button onclick="playNext()">Next</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>Lyrics</h2>
+            <pre id="lyrics">Select a song to display lyrics.</pre>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Your Audio Player</p>
+    </footer>
+
+    <script>
+        var musicFiles = [
+            '1.THELAVAARAKAMUNDHE.mp3',
+            '2.AAKARSHANA.MP3',
+            '3.AA DEVUDU LEDANI.mp3',
+            '5.CHADHUVUKONANI YESUKI PAANDITHYAM.MP3'
+        ];  // Add more audio files as needed
+        var currentMusicIndex = 0;
+
+        function playAudio(audioFile) {
+            var audioPlayer = document.getElementById('audio-player');
+            audioPlayer.src = audioFile;
+            audioPlayer.load();
+            audioPlayer.play();
+
+            // Update the current music index
+            currentMusicIndex = musicFiles.indexOf(audioFile);
+
+            // Display lyrics
+            fetchLyrics(audioFile);
+        }
+
+        function displayLyrics(lyrics) {
+            var lyricsElement = document.getElementById('lyrics');
+            lyricsElement.textContent = lyrics;
+        }
+
+        function fetchLyrics(audioFile) {
+            // Construct the filename for the corresponding lyrics file
+            var lyricsFile = audioFile.replace('.mp3', '.txt');
+
+            // Fetch lyrics from the text file
+            fetch(lyricsFile)
+                .then(response => response.text())
+                .then(lyrics => displayLyrics(lyrics))
+                .catch(error => console.error('Error fetching lyrics:', error));
+        }
+
+        function playPrevious() {
+            currentMusicIndex = (currentMusicIndex - 1 + musicFiles.length) % musicFiles.length;
+            var currentAudioFile = musicFiles[currentMusicIndex];
+            playAudio(currentAudioFile);
+        }
+
+        function playNext() {
+            currentMusicIndex = (currentMusicIndex + 1) % musicFiles.length;
+            var currentAudioFile = musicFiles[currentMusicIndex];
+            playAudio(currentAudioFile);
+        }
+    </script>
+</body>
+</html>
