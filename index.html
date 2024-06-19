@@ -3,13 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll-triggered Paper Overlay Animation</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Scroll-triggered Slide Animation with Tailwind CSS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+    </style>
 </head>
-<body>
-    <section class="section">About Section</section>
-    <section class="section">Contact Section</section>
-    <section class="section">Services Section</section>
-    <script src="script.js"></script>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-10 space-y-10">
+        <div class="section bg-white shadow-lg p-10 rounded-lg opacity-0 transform translate-y-full animate-slide-in">About Section</div>
+        <div class="section bg-white shadow-lg p-10 rounded-lg opacity-0 transform translate-y-full animate-slide-in">Contact Section</div>
+        <div class="section bg-white shadow-lg p-10 rounded-lg opacity-0 transform translate-y-full animate-slide-in">Services Section</div>
+    </div>
+    <script>
+        document.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const triggerBottom = window.innerHeight / 5 * 4;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('animate-slide-in');
+                } else {
+                    section.classList.remove('animate-slide-in');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
